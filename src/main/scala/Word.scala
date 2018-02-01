@@ -5,8 +5,12 @@ class Word(val spelling: String) {
 
 class WordResidue(val word: Word) {
   private val charOffset = 'a'.toInt
-  val residueLetters = initializeResidueLetters(word)
+  private val residueLetters = initializeResidueLetters(word)
   val residueSize: Int = residueLetters.sum
+
+  def residueValue(letter: Char): Int = {
+    residueLetters(letter.toInt - charOffset)
+  }
 
   private def initializeResidueLetters(word: Word): Vector[Int] = {
     var residue = Vector.fill(26)(0)

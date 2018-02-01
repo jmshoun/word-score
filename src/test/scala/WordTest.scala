@@ -17,12 +17,12 @@ class WordResidueTest extends FlatSpec {
 
   "Word residues" should "have correct residue vectors" in {
     val aardvark = new WordResidue(new Word("aardvark"))
-    assert(aardvark.residueLetters(0) == 3)
-    assert(aardvark.residueLetters(17) == 2)
-    assert(aardvark.residueLetters(21) == 1)
-    assert(aardvark.residueLetters(10) == 1)
-    assert(aardvark.residueLetters(3) == 1)
+    assert(aardvark.residueValue('a') == 3)
+    assert(aardvark.residueValue('r') == 2)
+    assert(aardvark.residueValue('d') == 1)
+    assert(aardvark.residueValue('v') == 1)
+    assert(aardvark.residueValue('k') == 1)
     // Check a random chunk of letters that should be zero
-    for (n <- 4 to 9) assert(aardvark.residueLetters(n) == 0)
+    for (c <- 'e' to 'j') assert(aardvark.residueValue(c) == 0)
   }
 }
