@@ -2,7 +2,7 @@ import scala.io.Source
 
 object WordScoreApp {
   type OptionMap = Map[Symbol, Any]
-  val defaultOptions: OptionMap = Map('maxSize -> 7)
+  val defaultOptions: OptionMap = Map('maxSize -> 7, 'showWords -> false)
 
   def main(args: Array[String]) = {
     val argList = args.toList
@@ -16,6 +16,12 @@ object WordScoreApp {
     val (bestSet, bestCount) = BestSet.findBestSet(wordList, options('maxSize).asInstanceOf[Int])
     println("Best set: " + bestSet)
     println("Word count: " + bestCount)
+    if (options('showWords).asInstanceOf[Boolean]) {
+      val validWords = wordList.filter(_.matchesLetterSet(bestSet))
+      println("Words:")
+      println("====================")
+      for (word <- validWords) println(word.spelling)
+    }
   }
 
   def parseOptions(argList: List[String]): OptionMap = {
@@ -24,6 +30,7 @@ object WordScoreApp {
 
       argList match {
         case Nil => map
+        case "--words" :: tail => parseNextOption(map ++ Map('showWords -> true), tail)
         case "--size" :: value :: tail => parseNextOption(map ++ Map('maxSize -> value.toInt), tail)
         case value :: flag :: tail if isSwitch(flag) =>
           parseNextOption(map ++ Map('dictFile -> value), argList.tail)
