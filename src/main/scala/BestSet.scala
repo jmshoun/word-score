@@ -13,34 +13,35 @@ object BestSet {
     if (validWords.isEmpty) {
       (currentSet, 0)
     } else if (lettersLeft == 1) {
-      val (lastLetter, numWords) = bestSetLastLetter(validWords)
-      (lastLetter :: currentSet, numWords)
+      val (lastLetter, numPoints) = bestSetLastLetter(validWords)
+      (lastLetter :: currentSet, numPoints)
     } else {
-      var bestCount = 0
+      var bestPoints = 0
       var bestSet = List[Char]()
       var currentWords = validWords
       for (letter <- currentLetter to lastLetter) {
         currentWords = currentWords.filter(_.residue.head >= letter)
-        if (currentWords.size > bestCount) {
+        if (totalPoints(currentWords) > bestPoints) {
           val (nextWords, matchedWords) = currentWords
             .map(_.matchLetter(letter))
             .partition(_.residue.nonEmpty)
-          val (newSet, newCount) = iterateBestSet(lettersLeft - 1, nextWords, letter :: currentSet)
-          if (newCount + matchedWords.size > bestCount) {
-            bestCount = newCount + matchedWords.size
+          val (newSet, newPoints) = iterateBestSet(lettersLeft - 1, nextWords, letter :: currentSet)
+          if (newPoints + totalPoints(matchedWords) > bestPoints) {
+            bestPoints = newPoints + totalPoints(matchedWords)
             bestSet = newSet
           }
         }
       }
-      (bestSet, bestCount)
+      (bestSet, bestPoints)
     }
   }
 
   def bestSetLastLetter(words: List[Word]): (Char, Int) = {
     val lastLetterFrequency = words
-      .map(_.residue.head)
-      .groupBy(identity)
-      .mapValues(_.size)
+      .groupBy(_.residue.head)
+      .mapValues(totalPoints)
     lastLetterFrequency.maxBy(_._2)
   }
+
+  def totalPoints(words: List[Word]): Int = words.map(_.points).sum
 }
