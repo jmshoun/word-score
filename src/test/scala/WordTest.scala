@@ -12,4 +12,11 @@ class WordTest extends FlatSpec {
     assert(test.residue == List('e', 's', 't', 't'))
     assert(aardvark.residue == List('a', 'a', 'a', 'd', 'k', 'r', 'r', 'v'))
   }
+
+  "Letter matches" should "have the correct effect on words" in {
+    val test = new Word("test")
+    assert(test.matchLetter('a').residue == test.residue)
+    assert(test.matchLetter('t').residue == test.residue)
+    assert(test.matchLetter('e').residue == test.residue.tail)
+  }
 }
