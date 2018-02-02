@@ -11,8 +11,11 @@ object WordScoreApp {
       println("Dictionary file must be supplied!")
       System.exit(1)
     }
+
     val wordList = loadWordList(options('dictFile).asInstanceOf[String])
-    printWordList(wordList)
+    val (bestSet, bestCount) = BestSet.findBestSet(wordList, options('maxSize).asInstanceOf[Int])
+    println("Best set: " + bestSet)
+    println("Word count: " + bestCount)
   }
 
   def parseOptions(argList: List[String]): OptionMap = {
