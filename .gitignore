@@ -2,3 +2,7 @@
 *.log
 # IntelliJ IDE files
 .idea/
+# Output files
+out/
+project/
+target/
