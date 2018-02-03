@@ -44,6 +44,7 @@ object WordScoreApp {
         case Nil => map
         case "--boggle" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'boggle), tail)
         case "--scrabble" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'scrabble), tail)
+        case "--wwf" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'wordsWithFriends), tail)
         case "--words" :: tail => parseNextOption(map ++ Map('showWords -> true), tail)
         case "--word-points" :: tail => parseNextOption(map ++ Map('showPoints -> true, 'showWords -> true), tail)
         case "--size" :: value :: tail => parseNextOption(map ++ Map('maxSize -> value.toInt), tail)

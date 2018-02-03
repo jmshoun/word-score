@@ -1,14 +1,20 @@
 object Points {
-  val scrabblePoints = Map[Char, Int](
+  private val scrabblePoints = Map[Char, Int](
     'a' -> 1, 'b' -> 3, 'c' -> 3, 'd' -> 2, 'e' -> 1, 'f' -> 4, 'g' -> 2, 'h' -> 4, 'i' -> 1,
     'j' -> 8, 'k' -> 5, 'l' -> 1, 'm' -> 3, 'n' -> 1, 'o' -> 1, 'p' -> 3, 'q' -> 10, 'r' -> 1,
     's' -> 1, 't' -> 1, 'u' -> 1, 'v' -> 4, 'w' -> 4, 'x' -> 8, 'y' -> 4, 'z' -> 10
+  )
+  private val wordsWithFriendsPoints = Map[Char, Int](
+    'a' -> 1, 'b' -> 4, 'c' -> 4, 'd' -> 2, 'e' -> 1, 'f' -> 4, 'g' -> 3, 'h' -> 3, 'i' -> 1,
+    'j' -> 10, 'k' -> 5, 'l' -> 2, 'm' -> 4, 'n' -> 2, 'o' -> 1, 'p' -> 4, 'q' -> 10, 'r' -> 1,
+    's' -> 1, 't' -> 1, 'u' -> 2, 'v' -> 5, 'w' -> 4, 'x' -> 8, 'y' -> 3, 'z' -> 10
   )
 
   def compute(word: String, method: Symbol): Int = {
     method match {
       case 'boggle => computeBogglePoints(word)
       case 'scrabble => computeScrabblePoints(word)
+      case 'wordsWithFriends => computeWordsWithFriendsPoints(word)
       case _ => 1
     }
   }
@@ -31,6 +37,13 @@ object Points {
     val possibleDoubles = 0 :: letterPoints.drop(4) ++ letterPoints.dropRight(4)
     val bingoBonus = if (word.size == 7) 50 else 0
     letterPoints.sum + possibleDoubles.max + bingoBonus
+  }
+
+  def computeWordsWithFriendsPoints(word: String): Int = {
+    val letterPoints = word.toList.map(wordsWithFriendsPoints(_))
+    val doubleWord = if (word.size >= 5) 2 else 1
+    val bingoBonus = if (word.size == 7) 35 else 0
+    letterPoints.sum * doubleWord + bingoBonus
   }
 }
 
