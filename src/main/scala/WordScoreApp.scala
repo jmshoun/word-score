@@ -2,7 +2,7 @@ import scala.io.Source
 
 object WordScoreApp {
   type OptionMap = Map[Symbol, Any]
-  val defaultOptions: OptionMap = Map(
+  val optionDefaults: OptionMap = Map(
     'maxSize -> 7,
     'showWords -> false,
     'showPoints -> false,
@@ -57,7 +57,7 @@ object WordScoreApp {
       }
     }
 
-    parseNextOption(defaultOptions, argList)
+    parseNextOption(optionDefaults, argList)
   }
 
   def loadWordList(filename: String, pointsMethod: Symbol = 'default): List[Word] = {
