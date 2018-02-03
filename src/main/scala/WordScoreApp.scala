@@ -5,6 +5,7 @@ object WordScoreApp {
   val defaultOptions: OptionMap = Map(
     'maxSize -> 7,
     'showWords -> false,
+    'showPoints -> false,
     'pointsMethod -> 'default
   )
 
@@ -28,7 +29,10 @@ object WordScoreApp {
     if (options('showWords).asInstanceOf[Boolean]) {
       println("Words:")
       println("====================")
-      for (word <- validWords) println(word.spelling)
+      for (word <- validWords) {
+        if (options('showPoints).asInstanceOf[Boolean]) print(word.points + " | ")
+        println(word.spelling)
+      }
     }
   }
 
@@ -41,6 +45,7 @@ object WordScoreApp {
         case "--boggle" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'boggle), tail)
         case "--scrabble" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'scrabble), tail)
         case "--words" :: tail => parseNextOption(map ++ Map('showWords -> true), tail)
+        case "--word-points" :: tail => parseNextOption(map ++ Map('showPoints -> true, 'showWords -> true), tail)
         case "--size" :: value :: tail => parseNextOption(map ++ Map('maxSize -> value.toInt), tail)
         case value :: flag :: tail if isSwitch(flag) =>
           parseNextOption(map ++ Map('dictFile -> value), argList.tail)
