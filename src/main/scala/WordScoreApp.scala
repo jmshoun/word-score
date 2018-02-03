@@ -1,5 +1,6 @@
 import scala.io.Source
 
+/** Primary entry point for the application. */
 object WordScoreApp {
   type OptionMap = Map[Symbol, Any]
   val optionDefaults: OptionMap = Map(
@@ -10,6 +11,7 @@ object WordScoreApp {
   )
 
   def main(args: Array[String]) = {
+    // Parse arguments
     val argList = args.toList
     val options = parseOptions(argList)
     if (!options.contains('dictFile)) {
@@ -36,21 +38,28 @@ object WordScoreApp {
     }
   }
 
+  /** Parses an argument list into a map of options. */
   def parseOptions(argList: List[String]): OptionMap = {
+    /** Recursively parse a single option. */
     def parseNextOption(map: OptionMap, argList: List[String]): OptionMap = {
       def isSwitch(s: String) = s(0) == '-'
 
       argList match {
-        case Nil => map
+        // Point scoring methods
         case "--boggle" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'boggle), tail)
         case "--scrabble" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'scrabble), tail)
         case "--wwf" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'wordsWithFriends), tail)
+        // Output options
         case "--words" :: tail => parseNextOption(map ++ Map('showWords -> true), tail)
         case "--word-points" :: tail => parseNextOption(map ++ Map('showPoints -> true, 'showWords -> true), tail)
+        // Letter set size
         case "--size" :: value :: tail => parseNextOption(map ++ Map('maxSize -> value.toInt), tail)
+        // Dictionary file
         case value :: flag :: tail if isSwitch(flag) =>
           parseNextOption(map ++ Map('dictFile -> value), argList.tail)
         case value :: Nil => map ++ Map('dictFile -> value)
+        // Base cases
+        case Nil => map
         case option :: tail =>
           println("Unknown option " + option)
           map
@@ -60,6 +69,7 @@ object WordScoreApp {
     parseNextOption(optionDefaults, argList)
   }
 
+  /** Loads a newline-delimited list of lowercase words from a file. Invalid words are filtered. */
   def loadWordList(filename: String, pointsMethod: Symbol = 'default): List[Word] = {
     val source = Source.fromFile(filename)
     val words = source.getLines.toList
@@ -67,6 +77,7 @@ object WordScoreApp {
     validWords.map(word => new Word(word, pointsMethod))
   }
 
+  /** Prints a list of words. */
   def printWordList(wordList: List[Word]): Unit = {
     for (word <- wordList) println(word.spelling)
   }
