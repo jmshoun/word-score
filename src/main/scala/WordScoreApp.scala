@@ -19,12 +19,12 @@ object WordScoreApp {
 
     val wordList = loadWordList(options('dictFile).asInstanceOf[String],
       options('pointsMethod).asInstanceOf[Symbol])
-    val (bestSet, bestPoints) = BestSet.findBestSet(wordList, options('maxSize).asInstanceOf[Int])
+    val bestSet = BestSet.findBestSet(wordList, options('maxSize).asInstanceOf[Int])
     val validWords = wordList
       .filter(_.matchesLetterSet(bestSet))
       .filter(_.points > 0)
     println("Best set: " + bestSet)
-    println("Point count: " + bestPoints)
+    println("Point count: " + validWords.map(_.points).sum)
     println("Word count: " + validWords.size)
     if (options('showWords).asInstanceOf[Boolean]) {
       println("Words:")

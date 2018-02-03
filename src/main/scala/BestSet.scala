@@ -4,7 +4,7 @@ object BestSet {
 
   def findBestSet(words: List[Word], letters: Int): (List[Char], Int) = {
     val (bestSet, bestCount) = iterateBestSet(letters, words, List[Char]())
-    (bestSet.reverse, bestCount)
+    bestSet.reverse
   }
 
   def iterateBestSet(lettersLeft: Int, words: List[Word], currentSet: List[Char]): (List[Char], Int) = {
