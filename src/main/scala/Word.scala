@@ -27,7 +27,10 @@ object Points {
 
   def computeScrabblePoints(word: String): Int = {
     val letterPoints = word.toList.map(scrabblePoints(_))
-    letterPoints.sum
+    // There are double letter squares 4 away from the starting square.
+    val possibleDoubles = 0 :: letterPoints.drop(4) ++ letterPoints.dropRight(4)
+    val bingoBonus = if (word.size == 7) 50 else 0
+    letterPoints.sum + possibleDoubles.max + bingoBonus
   }
 }
 
