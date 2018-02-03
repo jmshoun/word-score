@@ -19,22 +19,20 @@ object WordScoreApp {
       System.exit(1)
     }
 
+    // Best best set and valid of valid words
     val wordList = loadWordList(options('dictFile).asInstanceOf[String],
       options('pointsMethod).asInstanceOf[Symbol])
     val bestSet = BestSet.findBestSet(wordList, options('maxSize).asInstanceOf[Int])
     val validWords = wordList
       .filter(_.matchesLetterSet(bestSet))
       .filter(_.points > 0)
+
+    // Print the results
     println("Best set: " + bestSet)
     println("Point count: " + validWords.map(_.points).sum)
     println("Word count: " + validWords.size)
     if (options('showWords).asInstanceOf[Boolean]) {
-      println("Words:")
-      println("====================")
-      for (word <- validWords) {
-        if (options('showPoints).asInstanceOf[Boolean]) print(word.points + " | ")
-        println(word.spelling)
-      }
+      printWordList(validWords, options('showPoints).asInstanceOf[Boolean])
     }
   }
 
@@ -78,7 +76,12 @@ object WordScoreApp {
   }
 
   /** Prints a list of words. */
-  def printWordList(wordList: List[Word]): Unit = {
-    for (word <- wordList) println(word.spelling)
+  def printWordList(wordList: List[Word], showPoints: Boolean): Unit = {
+    println("Words:")
+    println("====================")
+    for (word <- wordList) {
+      if (showPoints) print(f"${word.points}%3d | ")
+      println(word.spelling)
+    }
   }
 }
