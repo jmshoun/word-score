@@ -39,6 +39,7 @@ object WordScoreApp {
       argList match {
         case Nil => map
         case "--boggle" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'boggle), tail)
+        case "--scrabble" :: tail => parseNextOption(map ++ Map('pointsMethod -> 'scrabble), tail)
         case "--words" :: tail => parseNextOption(map ++ Map('showWords -> true), tail)
         case "--size" :: value :: tail => parseNextOption(map ++ Map('maxSize -> value.toInt), tail)
         case value :: flag :: tail if isSwitch(flag) =>
