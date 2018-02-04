@@ -9,10 +9,39 @@ object WordScoreApp {
     'showPoints -> false,
     'pointsMethod -> 'default
   )
+  val usage =
+    """
+       |word-score: Find the set of letters that optimizes the sum of scores of words
+       |that can be spelled from the set of letters.
+
+       |Usage: word-score [--size num] [--scrabble OR --boggle OR --wwf]
+       |   [--words OR --words-points] DICTIONARY
+
+       |Arguments:
+       |   --size: The size of the set of letters. Runtime is exponential in this
+       |       argument, so be prepared to wait a while for values greater than 7 or so.
+       |   --scrabble: Score each word as it would be scored if it were the first play
+       |       in a game of Scrabble.
+       |   --boggle: Score each word according to its values in a game of Boggle.
+       |   --wwf: Score each word as it would be scored if it were the first play in a
+       |       game of Words With Friends.
+       |   --words: Print a newline-separated list of all of the valid words that can be
+       |       spelled from the optimal set.
+       |   --words-points: Print a newline-separated list of all of the valid words that
+       |       can be spelled, along with the number of points each word is worth.
+       |   DICTIONARY: Path to a newline-separated list of words. Any words that are not
+       |       composed completely of lowercase letters (i.e., any words with capitals,
+       |       apostrophes, spaces, hyphens, or numerals) will be automatically
+       |       discarded.
+    """.stripMargin
 
   def main(args: Array[String]) = {
     // Parse arguments
     val argList = args.toList
+    if (argList.isEmpty) {
+      println(usage)
+      System.exit(0)
+    }
     val options = parseOptions(argList)
     if (!options.contains('dictFile)) {
       println("Dictionary file must be supplied!")
