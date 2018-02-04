@@ -24,11 +24,14 @@ object WordScoreApp {
        |       in a game of Scrabble.
        |   --boggle: Score each word according to its values in a game of Boggle.
        |   --wwf: Score each word as it would be scored if it were the first play in a
-       |       game of Words With Friends.
+       |       game of Words With Friends. If none of --scrabble, --boggle, or --wwf are
+       |       supplied, default behavior is to score each word as one point.
        |   --words: Print a newline-separated list of all of the valid words that can be
        |       spelled from the optimal set.
        |   --words-points: Print a newline-separated list of all of the valid words that
-       |       can be spelled, along with the number of points each word is worth.
+       |       can be spelled, along with the number of points each word is worth. If
+       |       neither --words nor --words-points is supplied, default behavior is to
+       |       only print summary statistics for the set of words.
        |   DICTIONARY: Path to a newline-separated list of words. Any words that are not
        |       composed completely of lowercase letters (i.e., any words with capitals,
        |       apostrophes, spaces, hyphens, or numerals) will be automatically
