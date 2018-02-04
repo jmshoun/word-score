@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+java -jar out/artifacts/word-score.jar "$@"
+
